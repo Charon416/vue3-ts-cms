@@ -33,7 +33,9 @@
     "less": "^4.0.0",
     "less-loader": "^8.0.0",
     "prettier": "^2.7.1",
-    "typescript": "~4.5.5"
+    "typescript": "~4.5.5",
+    "unplugin-auto-import": "^0.11.2",
+    "unplugin-vue-components": "^0.22.4"
   },
   "config": {
     "commitizen": {
