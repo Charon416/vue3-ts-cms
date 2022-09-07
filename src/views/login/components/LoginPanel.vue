@@ -49,7 +49,7 @@ export default defineComponent({
 
     const handleLoginCLick = () => {
       console.log(accountRef.value)
-      accountRef.value?.loginAction()
+      accountRef.value?.loginAction(isKeepPassword.value)
     }
 
     return {
