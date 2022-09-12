@@ -21,6 +21,6 @@ export function requestUserInfoById(id: number) {
 // 通过用户信息获取权限菜单
 export function userMenusByUserId(id: number) {
   return hfRequest.get<IDataType>({
-    url: LoginAPI.UserMenus + id + '/menuIds'
+    url: LoginAPI.UserMenus + id + '/menu'
   })
 }
