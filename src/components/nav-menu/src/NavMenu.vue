@@ -26,7 +26,10 @@
             </template>
             <!-- 遍历二级子菜单 -->
             <template v-for="subitem in item.children" :key="subitem.id">
-              <el-menu-item :index="subitem.id + ''">
+              <el-menu-item
+                :index="subitem.id + ''"
+                @click="handleMenuClick(subitem)"
+              >
                 <i v-if="subitem.icon" :class="subitem.icon"></i>
                 <span>{{ subitem.name }}</span>
               </el-menu-item>
@@ -35,7 +38,7 @@
         </template>
         <!-- 一级菜单 -->
         <template v-else>
-          <el-menu-item :index="item.id + ''">
+          <el-menu-item :index="item.id + ''" @click="handleMenuClick(item)">
             <!-- <i v-if="item.icon" :class="item.icon"></i> -->
             <span>{{ item.name }}</span>
           </el-menu-item>
@@ -48,6 +51,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from '@/store'
+import { useRouter } from 'vue-router'
 // import { User } from '@element-plus/icons-vue'
 export default defineComponent({
   name: 'NavMenu',
@@ -62,9 +66,17 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
+    const router = useRouter()
     const userMenus = computed(() => store.state.login.userMenus)
+
+    const handleMenuClick = (item: any) => {
+      router.push({
+        path: item.url ?? '/not-found'
+      })
+    }
     return {
-      userMenus
+      userMenus,
+      handleMenuClick
     }
   }
 })

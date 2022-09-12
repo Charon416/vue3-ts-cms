@@ -1,14 +1,16 @@
 <template>
   <div class="main">
     <el-container class="main-content">
-      <el-aside :width="isCollapse ? '60px' : '210px'">
+      <el-aside :width="isCollapse ? '64px' : '210px'">
         <NavMenu :collapse="isCollapse" />
       </el-aside>
       <el-container class="page">
         <el-header class="page-header">
           <NavHeader @foldChange="foldChange" />
         </el-header>
-        <el-main class="page-content">Main</el-main>
+        <el-main class="page-content">
+          <router-view />
+        </el-main>
         <!-- <el-footer class="page-footer"></el-footer> -->
       </el-container>
     </el-container>
