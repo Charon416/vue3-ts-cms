@@ -7,19 +7,25 @@
       <Fold />
     </el-icon>
     <div class="content">
-      <div>面包屑</div>
+      <HfBreadcrumb :breadcrumbs="breadcrumbs" />
       <UserInfo />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import UserInfo from './UserInfo.vue'
+import HfBreadcrumb from '@/base-ui/breadcrumb'
+import { pathMapBreadcrumbs } from '@/utils/map-menus'
+import { useStore } from '@/store'
+import { useRoute } from 'vue-router'
+
 export default defineComponent({
   name: 'nav-header',
   components: {
-    UserInfo
+    UserInfo,
+    HfBreadcrumb
   },
   emit: ['foldChange'],
   setup(props, { emit }) {
@@ -28,9 +34,20 @@ export default defineComponent({
       isFold.value = !isFold.value
       emit('foldChange', isFold.value)
     }
+
+    // 面包屑数据
+    const store = useStore()
+    const breadcrumbs = computed(() => {
+      const route = useRoute()
+      const currentPath = route.path
+      const userMenus = store.state.login.userMenus
+      return pathMapBreadcrumbs(userMenus, currentPath)
+    })
+
     return {
       isFold,
-      handleFoldClick
+      handleFoldClick,
+      breadcrumbs
     }
   }
 })
