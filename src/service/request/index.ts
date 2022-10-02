@@ -44,7 +44,7 @@ class HFRequest {
     )
   }
 
-  request<T>(config: HFRequestConfig<T>): Promise<T> {
+  request<T = any>(config: HFRequestConfig<T>): Promise<T> {
     return new Promise((resolve, reject) => {
       if (config.interceptors?.requestInterceptor) {
         config = config.interceptors.requestInterceptor(config)
@@ -65,16 +65,16 @@ class HFRequest {
     })
   }
 
-  get<T>(config: HFRequestConfig<T>): Promise<T> {
+  get<T = any>(config: HFRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'GET' })
   }
-  post<T>(config: HFRequestConfig<T>): Promise<T> {
+  post<T = any>(config: HFRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'POST' })
   }
-  delete<T>(config: HFRequestConfig<T>): Promise<T> {
+  delete<T = any>(config: HFRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'DELETE' })
   }
-  patch<T>(config: HFRequestConfig<T>): Promise<T> {
+  patch<T = any>(config: HFRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'PATCH' })
   }
 }
