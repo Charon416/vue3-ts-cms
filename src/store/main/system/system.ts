@@ -28,7 +28,7 @@ const systemModule: Module<ISystemState, IRootState> = {
       )
       const { list, totalCount } = pageResult.data
       commit('changeUserList', list)
-      commit('changeUserList', totalCount)
+      commit('changeuserCount', totalCount)
     }
   }
 }
