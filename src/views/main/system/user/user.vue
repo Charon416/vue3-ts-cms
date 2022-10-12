@@ -5,12 +5,17 @@
     <div class="content">
       <HfTable :listData="userList" :propList="propList">
         <template #status="scope">
-          <el-tag type="home" disable-transitions>{{
-            scope.row.enable ? '启用' : '禁用'
-          }}</el-tag>
+          <el-tag
+            :type="scope.row.enable ? 'success' : 'danger'"
+            disable-transitions
+            >{{ scope.row.enable ? '启用' : '禁用' }}</el-tag
+          >
         </template>
         <template #createAt="scope">
-          {{ scope.row.createAt }}
+          {{ $filters.formatTime(scope.row.createAt) }}
+        </template>
+        <template #updateAt="scope">
+          {{ $filters.formatTime(scope.row.updateAt) }}
         </template>
       </HfTable>
     </div>
@@ -23,6 +28,12 @@ import { useStore } from '@/store'
 import PageSearch from '@/components/page-search'
 import HfTable from '@/base-ui/table/index'
 import { searchFormConfig } from './config/search.config'
+
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    $filters: any
+  }
+}
 
 export default defineComponent({
   name: 'user',
