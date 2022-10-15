@@ -1,5 +1,6 @@
 <template>
   <div class="hf-form">
+    <!-- 标题的动态插槽 -->
     <div class="header">
       <slot name="header"></slot>
     </div>
@@ -12,43 +13,57 @@
               :rules="item.rules"
               :style="labelStyle"
             >
+              <!-- 判读输入框的类型 -->
               <template
-                v-if="item.type === 'input' || item.type === 'password'"
+                v-if="
+                  item.type === 'input' ||
+                  item.type === 'password' ||
+                  item.type === 'textarea'
+                "
               >
                 <el-input
                   :placeholder="item.placeholder"
-                  :show-password="item.type === 'password'"
+                  :type="item.type"
                   v-bind="item.otherOptions"
-                  v-model="formData[`${item.filed}}`]"
-                />
+                  :show-password="item.type === 'password'"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
+                ></el-input>
               </template>
               <template v-else-if="item.type === 'select'">
                 <el-select
                   :placeholder="item.placeholder"
                   v-bind="item.otherOptions"
                   style="width: 100%"
-                  v-model="formData[`${item.filed}`]"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
                 >
                   <el-option
                     v-for="option in item.options"
                     :key="option.value"
                     :value="option.value"
-                    >{{ option.label }}</el-option
-                  >
+                    :label="option.title"
+                    :model-value="modelValue[`${item.field}`]"
+                    @update:modelValue="handleValueChange($event, item.field)"
+                    >{{ option.title }}
+                  </el-option>
                 </el-select>
               </template>
               <template v-else-if="item.type === 'datepicker'">
                 <el-date-picker
                   style="width: 100%"
                   v-bind="item.otherOptions"
-                  v-model="formData[`${item.filed}`]"
-                ></el-date-picker>
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
+                >
+                </el-date-picker>
               </template>
             </el-form-item>
           </el-col>
         </template>
       </el-row>
     </el-form>
+    <!-- 搜索区域底部的插槽 -->
     <div class="footer">
       <slot name="footer"></slot>
     </div>
@@ -60,12 +75,16 @@ import { defineComponent, PropType } from 'vue'
 import { IFormItem } from '../types'
 
 export default defineComponent({
-  name: 'user',
   props: {
-    formData: {
+    // 表单数据响应，双向绑定
+    modelValue: {
       type: Object,
       required: true
     },
+    // formData: {
+    //   type: Object,
+    //   required: true
+    // },
     formItems: {
       type: Array as PropType<IFormItem[]>,
       default: () => []
@@ -89,8 +108,28 @@ export default defineComponent({
       })
     }
   },
-  setup() {
-    return {}
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
+    // // 表单数据双向绑定
+    // const formData = ref({ ...props.modelValue })
+    // watch(
+    //   formData,
+    //   (newValue: any) => {
+    //     console.log(newValue)
+    //     emit('update:modelValue', newValue)
+    //   },
+    //   {
+    //     deep: true
+    //   }
+    // )
+    const handleValueChange = (value: any, field: string) => {
+      // console.log({ ...props.modelValue, [field]: value })
+      emit('update:modelValue', { ...props.modelValue, [field]: value })
+    }
+    return {
+      // formData,
+      handleValueChange
+    }
   }
 })
 </script>

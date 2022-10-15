@@ -1,5 +1,5 @@
-import MyForm from './src/MyForm.vue'
+import HfForm from './src/form.vue'
 
 export * from './types'
 
-export default MyForm
+export default HfForm
